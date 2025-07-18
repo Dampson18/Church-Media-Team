@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (menuToggle && nav) { // Ensure elements exist before adding listeners
         menuToggle.addEventListener('click', function() {
-            nav.classList.toggle('active'); // Toggles 'active' class on the nav UL
+            nav.classList.toggle('nav-active'); // Toggles 'nav-active' class on the nav element
             menuToggle.classList.toggle('active'); // Toggles 'active' class on the toggle button itself (for X animation)
         });
 
