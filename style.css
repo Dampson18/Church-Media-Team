@@ -1844,6 +1844,10 @@ footer ul li a:hover {
         display: flex;
     }
 
+    nav.active ul {
+        display: flex;
+    }
+
     nav ul {
         flex-direction: column;
         width: 100%;
