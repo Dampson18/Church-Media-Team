@@ -2,11 +2,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- 1. Mobile Navigation Toggle ---
     const menuToggle = document.querySelector('.menu-toggle');
-    const body = document.querySelector('body');
+    const nav = document.querySelector('nav');
 
-    if (menuToggle && body) { // Ensure elements exist before adding listeners
+    if (menuToggle && nav) {
         menuToggle.addEventListener('click', function() {
-            body.classList.toggle('mobile-menu-open');
+            nav.classList.toggle('active');
             menuToggle.classList.toggle('active');
         });
     }
