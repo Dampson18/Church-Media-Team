@@ -1788,7 +1788,7 @@ footer ul li a:hover {
 /* --- Responsive Design (Media Queries) --- */
 
 /* Medium devices (tablets, 768px and up) */
-@media (max-width: 992px) {
+@media (max-width: 767px) {
     #page-hero h2 {
         font-size: 2.8rem;
     }
