@@ -257,6 +257,22 @@ nav ul li a.active {
 .menu-toggle.active span:nth-child(3) {
     transform: rotate(45deg) translate(-7px, -6px);
 }
+/* Hide the nav by default on mobile */
+.mobile-menu {
+    display: none;
+    position: absolute;
+    top: 60px; /* adjust if needed */
+    right: 0;
+    width: 100%;
+    background-color: #111;
+    padding: 20px;
+    z-index: 1000;
+}
+
+/* Show menu when toggle is active */
+.mobile-menu.active {
+    display: block;
+}
 
 /* --- Page Hero Sections (General) --- */
 #page-hero {
