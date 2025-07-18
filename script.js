@@ -2,22 +2,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- 1. Mobile Navigation Toggle ---
     const menuToggle = document.querySelector('.menu-toggle');
-    const nav = document.querySelector('nav'); // Select the <nav> element
+    const body = document.querySelector('body');
 
-    if (menuToggle && nav) { // Ensure elements exist before adding listeners
+    if (menuToggle && body) { // Ensure elements exist before adding listeners
         menuToggle.addEventListener('click', function() {
-            nav.classList.toggle('nav-active'); // Toggles 'nav-active' class on the nav element
-            menuToggle.classList.toggle('active'); // Toggles 'active' class on the toggle button itself (for X animation)
-        });
-
-        // Close menu when a nav link is clicked (useful for single-page navigations or jumping within pages)
-        nav.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                if (nav.classList.contains('active')) {
-                    nav.classList.remove('active');
-                    menuToggle.classList.remove('active');
-                }
-            });
+            body.classList.toggle('mobile-menu-open');
+            menuToggle.classList.toggle('active');
         });
     }
 
