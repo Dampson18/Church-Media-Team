@@ -108,3 +108,20 @@ const animatedElements = document.querySelectorAll(
     });
 
 });
+
+const menuToggle = document.querySelector('.menu-toggle');
+const nav = document.querySelector('.mobile-menu'); // This must match your nav's class
+
+if (menuToggle && nav) {
+    menuToggle.addEventListener('click', function () {
+        nav.classList.toggle('active'); // Shows/hides the menu
+        menuToggle.classList.toggle('active'); // Animates the hamburger
+    });
+
+    nav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            nav.classList.remove('active');
+            menuToggle.classList.remove('active');
+        });
+    });
+}
