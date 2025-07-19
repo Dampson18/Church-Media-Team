@@ -2,11 +2,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- 1. Mobile Navigation Toggle ---
     const menuToggle = document.querySelector('.menu-toggle');
-    const nav = document.querySelector('nav ul'); // Select the <ul> inside <nav>
+    // **IMPORTANT:** Choose the correct selector for 'nav' based on your HTML structure.
+    // If your mobile menu is the <ul> element inside a <nav> tag:
+    const nav = document.querySelector('nav ul'); 
+    // OR, if your mobile menu is an element (e.g., a <nav> tag or a <div>) with the class 'mobile-menu':
+    // const nav = document.querySelector('.mobile-menu');
 
-    if (menuToggle && nav) { // Ensure elements exist before adding listeners
+    if (menuToggle && nav) {
         menuToggle.addEventListener('click', function() {
-            nav.classList.toggle('active'); // Toggles 'active' class on the nav UL
+            nav.classList.toggle('active'); // Toggles 'active' class on the navigation element
             menuToggle.classList.toggle('active'); // Toggles 'active' class on the toggle button itself (for X animation)
         });
 
@@ -25,8 +29,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- 2. Scroll-Triggered Animations (Intersection Observer) ---
     // Select elements that should animate when scrolled into view
     // These are elements that have initial 'opacity: 0;' and a CSS 'animation' property defined.
-const animatedElements = document.querySelectorAll(
-        '.hero-title, .hero-subtitle, .hero-description, .hero-btn, ' + // <-- UPDATED LINE HERE
+    const animatedElements = document.querySelectorAll(
+        '.hero-title, .hero-subtitle, .hero-description, .hero-btn, ' + 
         '.mission-item, .event-card, .quick-link-item, ' +
         '#our-story .content-wrapper .text-content, #our-story .content-wrapper .image-content, ' +
         '#mission-vision-values .m-v-v-item, #meet-the-team .team-member, ' +
@@ -108,20 +112,3 @@ const animatedElements = document.querySelectorAll(
     });
 
 });
-
-const menuToggle = document.querySelector('.menu-toggle');
-const nav = document.querySelector('.mobile-menu'); // This must match your nav's class
-
-if (menuToggle && nav) {
-    menuToggle.addEventListener('click', function () {
-        nav.classList.toggle('active'); // Shows/hides the menu
-        menuToggle.classList.toggle('active'); // Animates the hamburger
-    });
-
-    nav.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            nav.classList.remove('active');
-            menuToggle.classList.remove('active');
-        });
-    });
-}
