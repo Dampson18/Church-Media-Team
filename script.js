@@ -2,19 +2,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- 1. Mobile Navigation Toggle ---
     const menuToggle = document.querySelector('.menu-toggle');
-    // **IMPORTANT:** Choose the correct selector for 'nav' based on your HTML structure.
-    // If your mobile menu is the <ul> element inside a <nav> tag:
-    const nav = document.querySelector('nav ul'); 
-    // OR, if your mobile menu is an element (e.g., a <nav> tag or a <div>) with the class 'mobile-menu':
-    // const nav = document.querySelector('.mobile-menu');
+
+    // **IMPORTANT CHANGE HERE:**
+    // Select the <nav> element directly, as you want to toggle the 'active' class on it.
+    const nav = document.querySelector('header nav'); 
+    // This is specific enough to target the main navigation within your header.
+    // If you only have one <nav> element on the page, you could also use:
+    // const nav = document.querySelector('nav');
+
 
     if (menuToggle && nav) {
         menuToggle.addEventListener('click', function() {
-            nav.classList.toggle('active'); // Toggles 'active' class on the navigation element
-            menuToggle.classList.toggle('active'); // Toggles 'active' class on the toggle button itself (for X animation)
+            nav.classList.toggle('active'); // Toggles 'active' class on the <nav> element
+            menuToggle.classList.toggle('active'); // Toggles 'active' class on the toggle button (for X animation)
         });
 
-        // Close menu when a nav link is clicked (useful for single-page navigations or jumping within pages)
+        // Close menu when a nav link is clicked
+        // This targets all <a> tags *within* the selected 'nav' element.
         nav.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 if (nav.classList.contains('active')) {
@@ -27,8 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // --- 2. Scroll-Triggered Animations (Intersection Observer) ---
-    // Select elements that should animate when scrolled into view
-    // These are elements that have initial 'opacity: 0;' and a CSS 'animation' property defined.
+    // (Your existing animation code remains the same as it's separate from the menu logic)
     const animatedElements = document.querySelectorAll(
         '.hero-title, .hero-subtitle, .hero-description, .hero-btn, ' + 
         '.mission-item, .event-card, .quick-link-item, ' +
@@ -54,14 +57,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // When element comes into view, its opacity becomes 1 due to CSS animation 'forwards'
-                // No need to add a separate class, the CSS animation takes over.
-                // We just need to stop observing it after it's animated.
-                entry.target.style.opacity = 1; // Ensure opacity is set to 1 for animated items
-                // This forces the animation to play once in view, as the initial 0 opacity is overwritten by the animation's 'forwards' state.
-                // For a more robust solution that actively 'plays' the animation, we'd add/remove a class.
-                // Given the current CSS structure, simply observing and letting CSS handle it is fine.
-                observer.unobserve(entry.target); // Stop observing after animation
+                entry.target.style.opacity = 1; 
+                observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
@@ -70,34 +67,27 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(element);
     });
 
-    // --- Optional: Fix for initial animations on page load for elements already in view ---
-    // Some elements might be in view immediately on page load.
-    // The Intersection Observer might not fire for them instantly or reliably.
-    // We can manually trigger their animation if they are already in viewport.
     const initialCheck = () => {
         animatedElements.forEach(element => {
             const rect = element.getBoundingClientRect();
             if (rect.top < window.innerHeight && rect.bottom > 0) {
                 element.style.opacity = 1;
-                // Optional: if you had a class like 'animate-in' to trigger, add it here
-                // element.classList.add('animate-in');
             }
         });
     };
-    initialCheck(); // Run on DOMContentLoaded
-
-    // You might also want to run initialCheck on window.load to ensure images are loaded etc.
+    initialCheck(); 
     window.addEventListener('load', initialCheck);
 
 
     // --- 3. Back-to-Top Button ---
+    // (Your existing back-to-top button code remains the same)
     const backToTopButton = document.createElement('button');
     backToTopButton.classList.add('back-to-top');
     backToTopButton.innerHTML = '<i class="fas fa-arrow-up"></i>'; // Requires Font Awesome
     document.body.appendChild(backToTopButton);
 
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) { // Show button after scrolling 300px down
+        if (window.scrollY > 300) { 
             backToTopButton.classList.add('show');
         } else {
             backToTopButton.classList.remove('show');
@@ -107,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
     backToTopButton.addEventListener('click', () => {
         window.scrollTo({
             top: 0,
-            behavior: 'smooth' // Smooth scroll to top
+            behavior: 'smooth'
         });
     });
 
