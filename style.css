@@ -186,9 +186,13 @@ header .container {
     align-items: center;
 }
 
-/* Navigation Menu */
+/* --- Desktop Navigation Menu (Default State) --- */
+/* These styles apply to your <nav> element when the screen is large enough */
 nav ul {
     display: flex; /* Arranges nav items horizontally */
+    list-style: none; /* Remove bullet points */
+    margin: 0;
+    padding: 0;
 }
 
 nav ul li {
@@ -196,11 +200,12 @@ nav ul li {
 }
 
 nav ul li a {
-    color: #fff;
+    color: #fff; /* White links */
     font-weight: 500;
     padding: 8px 0;
     position: relative; /* For the underline effect */
     transition: color 0.3s ease;
+    text-decoration: none; /* Ensure no default underline */
 }
 
 nav ul li a::after {
@@ -222,56 +227,139 @@ nav ul li a.active::after {
 nav ul li a:hover,
 nav ul li a.active {
     color: #1abc9c; /* A vibrant teal color for hover/active state */
-    text-decoration: none;
 }
 
-/* Mobile Menu Toggle (Hidden by default on desktop) */
+
+/* --- Mobile Menu Toggle (Hamburger Icon) --- */
 .menu-toggle {
-    display: none; /* Hide on desktop */
+    display: none; /* Hidden by default on desktop. Media query will show it. */
     background: none;
     border: none;
     cursor: pointer;
     padding: 10px;
-    z-index: 1001; /* Ensure it's clickable */
+    z-index: 1001; /* Ensure it's above the menu when open */
+    position: relative; /* If you want to move it around */
 }
 
 .menu-toggle span {
     display: block;
     width: 30px;
     height: 3px;
-    background: #fff;
-    margin: 6px 0;
-    transition: 0.3s;
+    background: #fff; /* White bars (assuming dark header) */
+    margin: 6px 0; /* Space between bars */
+    transition: 0.3s; /* Smooth animation */
     border-radius: 2px;
 }
 
 /* Hamburger to X animation */
 .menu-toggle.active span:nth-child(1) {
-    transform: rotate(-45deg) translate(-7px, 6px);
+    transform: rotate(-45deg) translate(-7px, 6px); /* Adjust translate based on bar thickness/spacing */
 }
 
 .menu-toggle.active span:nth-child(2) {
-    opacity: 0;
+    opacity: 0; /* Middle bar fades out */
 }
 
 .menu-toggle.active span:nth-child(3) {
-    transform: rotate(45deg) translate(-7px, -6px);
-}
-/* Hide the nav by default on mobile */
-.mobile-menu {
-    display: none;
-    position: absolute;
-    top: 60px; /* adjust if needed */
-    right: 0;
-    width: 100%;
-    background-color: #111;
-    padding: 20px;
-    z-index: 1000;
+    transform: rotate(45deg) translate(-7px, -6px); /* Adjust translate */
 }
 
-/* Show menu when toggle is active */
-.mobile-menu.active {
-    display: block;
+
+/* --- Media Queries for Responsive Behavior --- */
+
+/* Breakpoint for Mobile/Tablet Screens (Example: max-width of 768px) */
+@media (max-width: 768px) {
+    /* Show the hamburger menu toggle */
+    .menu-toggle {
+        display: block; /* Show hamburger on smaller screens */
+    }
+
+    /* Styles for the Navigation Menu when it's acting as a mobile menu */
+    header nav { /* Target the <nav> element directly as JS toggles 'active' on it */
+        position: fixed; /* Fix the menu to the viewport */
+        top: 0; /* Position from the top of the viewport */
+        right: 0; /* Slide in from the right */
+        width: 70%; /* Adjust width as needed, e.g., 70% of screen */
+        max-width: 300px; /* Optional: max width for larger tablets */
+        height: 100vh; /* Full viewport height */
+        background-color: #111; /* Dark background for mobile menu */
+        padding-top: 80px; /* Space from top for header/logo */
+        box-shadow: -2px 0 10px rgba(0,0,0,0.5); /* Subtle shadow */
+        z-index: 1000; /* Below the toggle, above content */
+
+        /* Initial hidden state: Slide completely off-screen to the right */
+        transform: translateX(100%);
+        transition: transform 0.4s ease-out; /* Smooth slide animation */
+
+        /* Layout for menu items inside the mobile nav */
+        display: flex;
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center items horizontally */
+        justify-content: flex-start; /* Start items from the top */
+        overflow-y: auto; /* Enable scrolling if menu items exceed height */
+    }
+
+    /* Style the <ul> inside the mobile <nav> */
+    header nav ul {
+        flex-direction: column; /* Ensure vertical stacking for links */
+        width: 100%; /* Take full width of the mobile menu panel */
+        text-align: center; /* Center the text */
+        padding: 0;
+    }
+
+    header nav ul li {
+        margin: 20px 0; /* More vertical spacing for mobile links */
+    }
+
+    header nav ul li a {
+        font-size: 1.5em; /* Larger font size for mobile readability */
+        color: #fff; /* Ensure links are white on the dark background */
+        /* Remove underline from pseudo-element on mobile if you don't want it */
+        &::after {
+            display: none; /* Hide the underline on mobile for cleaner look */
+        }
+    }
+
+    /* When the menu is active, slide it into view */
+    header nav.active {
+        transform: translateX(0); /* Slide fully into view */
+    }
+}
+
+/* Breakpoint for Desktop Screens (Example: min-width of 769px) */
+@media (min-width: 769px) {
+    /* Hide the hamburger menu toggle on desktop */
+    .menu-toggle {
+        display: none;
+    }
+
+    /* Ensure the navigation is visible and correctly styled for desktop */
+    header nav {
+        position: static; /* Remove fixed positioning */
+        background-color: transparent; /* No overlay background */
+        width: auto; /* Revert width */
+        height: auto; /* Revert height */
+        box-shadow: none; /* Remove shadow */
+        transform: none; /* Remove any transformations */
+        padding: 0; /* Remove mobile padding */
+        display: block; /* Or flex, depending on your header's flex setup */
+        /* Ensure that the 'active' class on <nav> from mobile state doesn't interfere */
+        /* You might want to remove the 'active' class via JS on resize for safety */
+    }
+
+    header nav ul {
+        flex-direction: row; /* Ensure horizontal layout for desktop */
+        align-items: center; /* Vertically align items if using flex on parent */
+    }
+
+    header nav ul li a {
+        font-size: 1em; /* Revert font size to desktop size */
+        color: #fff; /* Revert link color if it changed for mobile */
+        /* Re-enable the underline for desktop if it was disabled for mobile */
+        &::after {
+            display: block; /* Show the underline on desktop */
+        }
+    }
 }
 
 /* --- Page Hero Sections (General) --- */
@@ -1930,12 +2018,13 @@ footer ul li a:hover {
     /* Header */
     header .container {
         flex-wrap: wrap;
-        justify-content: space-between; /* Keep logo and toggle on ends */
+        justify-content: space-between;
         padding: 0 15px;
+        position: relative; /* Add this if you use absolute positioning for nav */
     }
 
     .logo {
-        margin-bottom: 0; /* Reset margin if wrapped */
+        margin-bottom: 0;
     }
     .logo h1 {
         font-size: 1.5rem;
@@ -1944,21 +2033,38 @@ footer ul li a:hover {
         height: 45px;
     }
 
+    /* --- IMPORTANT CHANGES FOR MOBILE NAV --- */
     nav {
         order: 3; /* Push nav below logo and toggle */
         width: 100%;
-        display: none; /* Hide nav by default for mobile */
+        /* Remove `display: none;` here */
         flex-direction: column; /* Stack nav items vertically */
         background: #2c3e50; /* Same as header background */
         padding-bottom: 15px;
-        position: absolute;
-        top: 100%; /* Position below header */
-        left: 0;
+
+        /* Use fixed position for a full-screen overlay or side menu */
+        position: fixed; /* Changed to fixed for smooth animation */
+        top: 0; /* Align to the very top */
+        right: 0; /* Align to the right for a right-side slide-in menu */
+        height: 100vh; /* Full viewport height */
+        /* width: 100%; */ /* If you want it full width */
+        width: 70%; /* Example: 70% width for a sidebar menu */
+        max-width: 350px; /* Limit max width for larger screens */
+
+        overflow-y: auto; /* Enable scrolling for long menus */
+        padding-top: 80px; /* Push content down past header, adjust based on your header's actual height */
         box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+        z-index: 999; /* Ensure it's above other content */
+
+        /* Initial hidden state: slide it off-screen to the right */
+        transform: translateX(100%); /* Start off-screen */
+        transition: transform 0.4s ease-out; /* Smooth slide animation */
+        visibility: hidden; /* Hide it visually until active */
     }
 
     nav.active { /* Class added by JavaScript when menu is open */
-        display: flex;
+        transform: translateX(0); /* Slide into view */
+        visibility: visible; /* Make it visible */
     }
 
     nav ul {
@@ -1981,6 +2087,7 @@ footer ul li a:hover {
         padding: 15px 20px;
         text-align: center;
         font-size: 1.1rem;
+        color: #fff; /* Ensure mobile links are white */
     }
     nav ul li a::after {
         display: none; /* Hide underline on mobile menu items */
@@ -1991,136 +2098,48 @@ footer ul li a:hover {
 
     .menu-toggle {
         display: block; /* Show hamburger icon on mobile */
-        position: static; /* Let it flow normally */
+        /* Make sure its z-index is higher than nav's */
+        z-index: 1001; /* Ensure it's clickable above the menu */
+        position: relative; /* Or fixed, if you want it to scroll with content */
     }
 
-    /* Page Hero */
-    #page-hero {
-        padding: 100px 15px;
-        min-height: 280px;
-    }
-    #page-hero h2 {
-        font-size: 2.2rem;
-    }
-    #page-hero p {
-        font-size: 1rem;
-    }
+    /* ... (rest of your existing mobile styles) ... */
 
-    /* Homepage Hero */
-    #hero {
-        padding: 120px 15px;
-        min-height: 400px;
-    }
-    #hero .hero-content h2 {
-        font-size: 2.8rem;
-    }
-    #hero .hero-content h3 {
-        font-size: 1.5rem;
-    }
-    #hero .hero-content p {
-        font-size: 1.1rem;
-        margin-bottom: 30px;
-    }
-
-    .btn {
-        padding: 10px 20px;
-        font-size: 1rem;
-    }
-
-    .intro-paragraph {
-        font-size: 1rem;
-        margin-bottom: 30px;
-    }
-
-    /* All Grids & Flex Containers that wrap */
-    .mission-points,
-    .event-grid,
-    .link-grid,
-    #mission-vision-values .m-v-v-grid,
-    #meet-the-team .team-grid,
-    #service-overview .services-grid,
-    #how-we-serve .serve-points,
-    .gallery-grid, .video-grid,
-    #past-events .past-events-grid,
-    #sermon-archive .sermon-grid,
-    #roles-needed .roles-grid,
-    #giving-options .giving-options-grid,
-    #contact-info .contact-details-grid {
-        grid-template-columns: 1fr; /* Single column */
-        gap: 25px;
-    }
-
-    /* Forms */
-    #application-form .join-us-form,
-    #contact-form-section .contact-form {
-        padding: 25px;
-    }
-
-    /* Contact Map */
-    #google-map .map-container {
-        padding-bottom: 75%; /* More square on mobile */
-    }
-
-    /* Footer */
-    footer {
-        padding: 40px 0 20px;
-    }
-    footer h4 {
-        margin-bottom: 15px;
-    }
-    footer h4::after {
-        bottom: -5px;
-    }
-    .footer-social {
-        gap: 15px;
-    }
-    .footer-social img {
-        width: 28px;
-        height: 28px;
-    }
-    .footer-credit {
-        margin-top: 20px;
-        padding-top: 15px;
-    }
+    /* If you also have a desktop-first media query for min-width, ensure it resets mobile styles */
 }
 
 /* Extra small devices (less than 480px) */
 @media (max-width: 480px) {
-    #page-hero h2 {
-        font-size: 1.8rem;
-    }
-    #page-hero p {
-        font-size: 0.95rem;
-    }
-    #hero .hero-content h2 {
-        font-size: 2.2rem;
-    }
-    #hero .hero-content h3 {
-        font-size: 1.2rem;
-    }
-    #hero .hero-content p {
-        font-size: 1rem;
+    /* ... (your existing extra-small device styles) ... */
+    /* Ensure the `nav` related styles in this block don't conflict with the 767px block.
+       They should generally be for specific adjustments, not overriding the core
+       slide-in/out mechanism.
+    */
+}
+
+/* --- Desktop Styles (Add this if you don't have it, or modify your existing min-width query) --- */
+@media (min-width: 768px) {
+    .menu-toggle {
+        display: none; /* Hide hamburger on desktop */
     }
 
-    section h3 {
-        font-size: 1.8rem;
+    /* Ensure desktop nav is visible and correctly positioned */
+    nav {
+        position: static; /* Reset to normal flow */
+        width: auto; /* Reset width */
+        height: auto; /* Reset height */
+        background: transparent; /* No background overlay */
+        padding: 0; /* No extra padding */
+        box-shadow: none; /* No shadow */
+        z-index: auto; /* Reset z-index */
+        transform: none; /* Remove any transform */
+        visibility: visible; /* Always visible on desktop */
+        display: block; /* Or flex, if your header uses flexbox for nav */
     }
 
-    .btn {
-        width: 100%; /* Make buttons full width on very small screens */
-        margin-right: 0 !important; /* Override inline margins */
-        margin-bottom: 15px !important;
-    }
-    .btn:last-child {
-        margin-bottom: 0 !important;
-    }
-
-    #upcoming-events .event-info .btn,
-    #latest-sermons .sermon-details .btn {
-        width: auto; /* Allow them to remain inline if enough space, or wrap naturally */
-        margin-right: 10px !important;
-        margin-bottom: 10px !important;
-        display: inline-block;
+    nav ul {
+        flex-direction: row; /* Ensure horizontal display for desktop links */
+        /* Your desktop nav ul li a styles for color, underline etc. will apply */
     }
 }
 
